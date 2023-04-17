@@ -51,12 +51,14 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        
+        System.out.println("\n\nkommer jag till AuthenticationFilter.successfulAuthentication?\n\n");
         String token = JWT.create()
         .withSubject(authResult.getName())
         .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION))
         .sign(Algorithm.HMAC512(SecurityConstants.SECRET_KEY));
         response.addHeader(SecurityConstants.AUTHORIZATION, SecurityConstants.BEARER + token);
+        
+        System.out.println("\n\nkommer jag till AuthenticationFilter.successfulAuthentication slutet?\n\n");
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 
     }
